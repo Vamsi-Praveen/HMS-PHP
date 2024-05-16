@@ -17,7 +17,7 @@ if(isset($_POST['submit'])){
     $mobile = $_POST['mobile'];
     $parentMobile = $_POST['parentMobile'];
 
-    $query = "INSERT INTO STUDENTS (rollno,name,email,college,branch,block,roomno,mobile,parentMobile) values('$rollno','$name','$email','$college','$branch','$block','$roomno','$mobile','$parentMobile');";
+    $query = "INSERT INTO STUDENTS (rollno,name,email,college,branch,block,roomno,mobile,parent_mobile) values('$rollno','$name','$email','$college','$branch','$block','$roomno','$mobile','$parentMobile');";
 
     $result = mysqli_query($conn,$query);
 
