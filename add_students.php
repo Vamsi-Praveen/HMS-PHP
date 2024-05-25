@@ -6,6 +6,7 @@ include('./includes/header.php');
 
 <?php
 include_once('./config/dbConfig.php');
+
 if(isset($_POST['submit'])){
     $email = $_POST['email'];
     $name = $_POST['name'];
@@ -13,25 +14,27 @@ if(isset($_POST['submit'])){
     $college = $_POST['college'];
     $branch = $_POST['branch'];
     $block = $_POST['block'];
+    $year = $_POST['year'];
     $roomno = $_POST['roomno'];
     $mobile = $_POST['mobile'];
     $parentMobile = $_POST['parentMobile'];
 
-    $query = "INSERT INTO STUDENTS (rollno,name,email,college,branch,block,roomno,mobile,parent_mobile) values('$rollno','$name','$email','$college','$branch','$block','$roomno','$mobile','$parentMobile');";
+    $query = "INSERT INTO STUDENTS (rollno, name, email, college, branch, year, block, roomno, mobile, parent_mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $result = mysqli_query($conn,$query);
+    $stmt = $conn->prepare($query);
 
+    $stmt->bind_param("ssssssssss", $rollno, $name, $email, $college, $branch,$year, $block, $roomno, $mobile, $parentMobile);
+
+    $result = $stmt->execute();
+    $stmt->close();
     if($result){
-        echo "<script>alert('Added Sucessfully')</script>";
-    }
-    else
-    {
-        echo "<script>alert('Error Occured')</script>";   
+        echo "<script>alert('Added Successfully')</script>";
+    } else {
+        echo "<script>alert('Error Occurred')</script>";   
     }
 }
-
-
 ?>
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -92,10 +95,10 @@ if(isset($_POST['submit'])){
                                     <label class="form-label">Year</label>
                                     <select name="year" class="form-select p-1">
                                         <option selected>Select Year</option>
-                                        <option value="I">1</option>
-                                        <option value="II">2</option>
-                                        <option value="III">3</option>
-                                        <option value="IV">4</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
                                     </select>
                                 </div>
                                 <div class="mb-3 d-flex flex-column">

@@ -9,8 +9,18 @@ if (isset($_POST['rollno'])) {
     $expiryTime = strtotime('+10minutes',$current_time);
     $exipryTimeFormated = date('h:i:sa',$expiryTime);
     echo $exipryTimeFormated;
-    $query = "INSERT INTO gatepass_otp(rollno,otp,time_now,expiryTime) values('$rollno','$otpGen','$time_now','$exipryTimeFormated');";
-    $result = mysqli_query($conn,$query);
+
+    $stmt = $conn->prepare("INSERT INTO gatepass_otp(rollno,otp,time_now,expiryTime) values(?,?,?,?);");
+
+    $stmt->bind_param("ssss",
+        $rollno,
+        $otpGen,
+        $time_now,
+        $exipryTimeFormated
+    );
+
+    $result = $stmt->execute();
+    $stmt->close();
     if($result){
         echo "otp send successfully";
     }

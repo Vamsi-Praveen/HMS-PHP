@@ -5,8 +5,8 @@
     $database = "hms";
 
     try {
-        $conn = mysqli_connect($server_address,$username,$password,$database);
-        if(!$conn){
+        $conn = new mysqli($server_address,$username,$password,$database);
+        if($conn->connect_error){
             echo "Database Connection failed";
             exit();
         }

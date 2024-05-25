@@ -9,38 +9,40 @@ if(isset($_SESSION['username'])){
 }
 ?>
 
-
 <?php
-
 $error_message = "";
 $login_status = false;
+
 if(isset($_POST['login'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $query = "SELECT * FROM  users where email='$email';";
-    $result = mysqli_query($conn,$query);
-    if(!mysqli_num_rows($result)>0){
-        $error_message = "User Not Found";
-    }
-    else{
-     $res = mysqli_fetch_assoc($result);
-     $dbPassword = $res['password'];
-     if($res){
-        if($dbPassword==$password){
+
+    $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if($result->num_rows > 0){
+        $res = $result->fetch_assoc();
+        $dbPassword = $res['password'];
+        
+        if($dbPassword == $password){
             $error_message = 'Login Success';
             $login_status = true;
-            $_SESSION['username']=$email;
+            $_SESSION['username'] = $email;
             $_SESSION['name'] = $res['name'];
-            header('location:index.php');
-        }
-        else{
+            header('location: index.php');
+            exit();
+        } else {
             $error_message = 'Invalid Credentials';
         }
+    } else {
+        $error_message = "User Not Found";
     }
 }
-}
-
 ?>
+
 <div class="container">
 
     <!-- Outer Row -->

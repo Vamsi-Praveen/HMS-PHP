@@ -1,19 +1,22 @@
 <?php
-	include_once('./config/dbConfig.php');
-	include('./utils/functions.php');
+include_once('./config/dbConfig.php');
+include('./utils/functions.php');
 
-	if(isset($_GET['rollno'])){
-		$rollno = decrypt_data($_GET['rollno']);
+if(isset($_GET['rollno'])){
+    $rollno = decrypt_data($_GET['rollno']);
 
-		$query = "DELETE FROM students WHERE rollno = '$rollno'";
+    $query = "DELETE FROM students WHERE rollno = ?";
 
-		$result = mysqli_query($conn,$query);
+    $stmt = $conn->prepare($query);
 
-		if(!$result){
-			echo "Error ".mysqli_error($conn);
-		}
+    $stmt->bind_param("s", $rollno);
 
-	}
+    $result = $stmt->execute();
 
+    $stmt->close();
+    if(!$result){
+        echo "Error " . $stmt->error;
+    }
+}
 
 ?>

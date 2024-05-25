@@ -5,14 +5,17 @@ include_once('../config/dbConfig.php');
 if(isset($_POST['rollno'])){
     $rollno = $_POST['rollno'];
 
-    $query = "SELECT * FROM students WHERE rollno = '$rollno'";
-    $result = mysqli_query($conn, $query);
+    $stmt = $conn->prepare("SELECT * FROM students WHERE rollno = ?");
 
-    if(mysqli_num_rows($result) == 0) {
+    $stmt->bind_param("s",$rollno);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows == 0) {
         echo json_encode(array('error' => 'No Student Found'));
     } else {
-        $res = mysqli_fetch_assoc($result);
+        $res = $result->fetch_assoc();
         echo json_encode($res);
     }
+    $stmt->close();
 }
 ?>

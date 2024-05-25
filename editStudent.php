@@ -17,13 +17,18 @@ if(isset($_GET['rollno'])){
     }
     $roll_no = decrypt_data($rollno);
 
-    $query = "select * from students where rollno = '$roll_no';";
+    $stmt = $conn->prepare("select * from students where rollno = ?;");
 
-    $result = mysqli_query($conn,$query);
+    $stmt->bind_param('s',$roll_no);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
 
     if($result){
-        $row = mysqli_fetch_assoc($result);
+        $row = $result->fetch_assoc();
     }
+    $stmt->close();
 
 }
 
@@ -34,23 +39,39 @@ if(isset($_POST['submit'])){
     $college = $_POST['college'];
     $branch = $_POST['branch'];
     $block = $_POST['block'];
+    $year = $_POST['year'];
     $roomno = $_POST['roomno'];
     $mobile = $_POST['mobile'];
     $parentMobile = $_POST['parentMobile'];
 
-    $query = "UPDATE students set name='$name',rollno='$rollno',email='$email',college='$college',branch='$branch',block='$block',roomno='$roomno',mobile='$mobile',parent_mobile='$parentMobile' where rollno = '$rollno';";
 
-    $result = mysqli_query($conn,$query);
+    $stmt = $conn->prepare("UPDATE students set name=?,rollno=?,email=?,college=?,branch=?,year=?,block=?,roomno=?,mobile=?,parent_mobile=? where rollno = ?;");
 
-    if($result){
+    $stmt->bind_param('sssssssssss',
+        $name,
+        $rollno,
+        $email,
+        $college,
+        $branch,
+        $year,
+        $block,
+        $roomno,
+        $mobile,
+        $parentMobile,
+        $rollno
+    );
+    $stmt->execute();
+
+    if($stmt->affected_rows >0){
         echo "<script>alert('Updated Sucessfully')</script>";
         echo "<script>window.location.href='view_students.php'</script>";
     }
     else
     {
         echo "<script>alert('Error Occured')</script>";  
-        echo mysqli_erroe($conn); 
+        echo mysqli_error($conn); 
     }
+    $stmt->close();
 }
 
 
@@ -114,10 +135,10 @@ if(isset($_POST['submit'])){
                                     <label class="form-label">Year</label>
                                     <select name="year" class="form-select p-1">
                                         <option selected>Select Year</option>
-                                        <option value="I" <?php if($row['year'] == '1') echo 'selected';?>>1</option>
-                                        <option value="II" <?php if($row['year'] == '2') echo 'selected';?>>2</option>
-                                        <option value="III" <?php if($row['year'] == '3') echo 'selected';?>>3</option>
-                                        <option value="IV" <?php if($row['year'] == '4') echo 'selected';?>>4</option>
+                                        <option value="1" <?php if($row['year'] == '1') echo 'selected';?>>1</option>
+                                        <option value="2" <?php if($row['year'] == '2') echo 'selected';?>>2</option>
+                                        <option value="3" <?php if($row['year'] == '3') echo 'selected';?>>3</option>
+                                        <option value="4" <?php if($row['year'] == '4') echo 'selected';?>>4</option>
                                     </select>
                                 </div>
                                 <div class="mb-3 d-flex flex-column">

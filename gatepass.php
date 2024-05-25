@@ -161,12 +161,16 @@ include('./includes/header.php');
                 alert('Provide Roll No');
                 return;
             }
-            $('#rollno').prop('readonly',true);
             $.ajax({
                 url:'utils/getStuDetails.php',
                 type:'POST',
                 data:{rollno:rollno},
                 success: function(response){
+                    if(JSON.parse(response).error == "No Student Found"){
+                        $('#details').hide();
+                        alert("No Student Found");
+                        return;
+                    }
                     const result = JSON.parse(response);
                     $('#student_details').val(JSON.stringify(result));
                     $('#name').text(result.name);
@@ -222,7 +226,7 @@ include('./includes/header.php');
                             data:$('#gatepassForm').serialize(),
                             type:'POST',
                             success:function(response){
-                               window.location.href = 'viewGatepass.php?data='+ encodeURIComponent(response)
+                               return window.location.href = 'viewGatepass.php?data='+ encodeURIComponent(response)
                             },
                             error:function(e){
                                 alert('Error Occured');

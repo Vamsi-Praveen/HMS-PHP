@@ -5,20 +5,24 @@ $res = [];
 
 // Query to get count of students
 $query = "SELECT COUNT(*) AS student_count FROM students";
-$result = mysqli_query($conn, $query);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result) {
-    $row = mysqli_fetch_assoc($result);
+    $row = $result->fetch_assoc();
     $res['student_count'] = $row['student_count'];
 }
 
 // Query to get count of gate passes
 $query = "SELECT COUNT(*) AS gatepass_count FROM gatepass";
-$result = mysqli_query($conn, $query);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result) {
-    $row = mysqli_fetch_assoc($result);
+    $row = $result->fetch_assoc();
     $res['gatepass_count'] = $row['gatepass_count'];
 }
 
-// Return counts as JSON
+$stmt->close();
 echo json_encode($res);
 ?>

@@ -3,13 +3,16 @@ include_once('../config/dbConfig.php');
 
 $res = [];
 
-// Subquery to generate all block names you're interested in
 $subquery = "SELECT 'A' AS block UNION ALL
              SELECT 'B' UNION ALL
              SELECT 'C' UNION ALL
              SELECT 'D' UNION ALL
              SELECT 'E' UNION ALL
              SELECT 'F'";
+
+$stmtSubquery = $conn->prepare($subquery);
+$stmtSubquery->execute();
+$resultSubquery = $stmtSubquery->get_result();
 
 // Query to get count of students for each block, including blocks with no students
 $query = "SELECT b.block, IFNULL(s.student_count, 0) AS student_count
@@ -20,14 +23,16 @@ $query = "SELECT b.block, IFNULL(s.student_count, 0) AS student_count
               GROUP BY block
           ) s ON b.block = s.block";
 
-$result = mysqli_query($conn, $query);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
+$stmt->close();
 if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Store the count for each block in the $res array
+    while ($row = $result->fetch_assoc()) {
         $res[$row['block']] = $row['student_count'];
     }
 }
 
-// Return counts as JSON
+
 echo json_encode($res);
 ?>
