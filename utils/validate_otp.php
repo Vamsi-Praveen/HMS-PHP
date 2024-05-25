@@ -10,18 +10,20 @@ if(isset($_POST['otp']) && isset($_POST['rollno'])){
 	ORDER BY STR_TO_DATE(expiryTime, '%h:%i:%s%p') ASC
 	LIMIT 1;"
 	;
-	$valid = false;
 	$result = mysqli_query($conn,$query);
 	if($result && mysqli_num_rows($result)>0){
 		$data = mysqli_fetch_assoc($result);
 		if($data['otp'] == $otp){
-			$valid = true;
-			echo $valid;
+			echo json_encode(array('valid' => true));
 		}
 		else
 		{
-			echo $valid;
+			echo json_encode(array('valid' => false));
 		}
+	}
+	else
+	{
+		echo json_encode(array('valid' => false));
 	}
 }
 

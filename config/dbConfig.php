@@ -6,6 +6,10 @@
 
     try {
         $conn = mysqli_connect($server_address,$username,$password,$database);
+        if(!$conn){
+            echo "Database Connection failed";
+            exit();
+        }
     } catch (Exception $e) {
         echo 'Db Connection failed';
     }
