@@ -24,6 +24,9 @@
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+    <link href="vendor/datatables/buttons.bootstrap4.min.css" rel="stylesheet">
+
+
 </head>
 
 <body id="page-top" class=<?php echo isset($bodyColor) ?  $bodyColor :  "bg-gradient-primary"?>>
