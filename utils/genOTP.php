@@ -1,4 +1,5 @@
 <?php
+
 include_once('../config/dbConfig.php');
 if (isset($_POST['rollno'])) {
     $rollno = $_POST['rollno'];
@@ -35,4 +36,7 @@ function generateOTP(){
     $otp = rand(1000,9999);
     return $otp;
 }
+
+
+
 ?>

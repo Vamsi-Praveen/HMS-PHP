@@ -8,7 +8,7 @@ if(isset($_POST['otp']) && isset($_POST['rollno'])){
     $query = "SELECT * FROM gatepass_otp 
               WHERE rollno = ? 
               AND NOW() < STR_TO_DATE(expiryTime, '%h:%i:%s%p')
-              ORDER BY STR_TO_DATE(expiryTime, '%h:%i:%s%p') ASC
+              ORDER BY STR_TO_DATE(expiryTime, '%h:%i:%s%p') DESC
               LIMIT 1";
 
     $stmt = $conn->prepare($query);

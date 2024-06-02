@@ -22,7 +22,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Students & Rooms
+                Students & Staff
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -35,27 +35,25 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="add_students.php">Add Students</a>
-                        <a class="collapse-item" href="view_students.php">View Students</a>
+                        <a class="collapse-item" href="view_details.php?p=student">View Students</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
+             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Manage Rooms</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaff"
+                    aria-expanded="true" aria-controls="collapseStaff">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Manage Staff</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
+                <div id="collapseStaff" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="add_rooms.php">Add Rooms</a>
-                        <a class="collapse-item" href="">View Rooms</a>
+                        <a class="collapse-item" href="add_staff.php">Add Staff</a>
+                        <a class="collapse-item" href="view_details.php?p=staff">View Staff</a>
                     </div>
                 </div>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -64,10 +62,20 @@
                 Management
             </div>
             <!-- Nav Item - Charts -->
+              <li class="nav-item">
+                <a class="nav-link" href="complaints.php">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Complaints</span></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="gatepass.php">
                     <i class="fas fa-fw fa-ticket-alt"></i>
                     <span>Gate Pass</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="view_details.php?p=gatepass">
+                    <i class="fas fa-list-alt"></i>
+                    <span>Gate Pass List</span></a>
             </li>
 
             <!-- Nav Item - Tables -->

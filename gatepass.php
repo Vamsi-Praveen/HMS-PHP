@@ -226,7 +226,7 @@ include('./includes/header.php');
                             data:$('#gatepassForm').serialize(),
                             type:'POST',
                             success:function(response){
-                               return window.location.href = 'viewGatepass.php?data='+ encodeURIComponent(response)
+                               return window.location.href='viewGatepass.php?data='+ encodeURIComponent(response)
                             },
                             error:function(e){
                                 alert('Error Occured');
