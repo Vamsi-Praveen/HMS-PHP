@@ -35,7 +35,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="add_students.php">Add Students</a>
-                        <a class="collapse-item" href="view_details.php?p=student">View Students</a>
+                        <a class="collapse-item" href="view_details.php?p=students">View Students</a>
                     </div>
                 </div>
             </li>
@@ -63,7 +63,7 @@
             </div>
             <!-- Nav Item - Charts -->
               <li class="nav-item">
-                <a class="nav-link" href="complaints.php">
+                <a class="nav-link" href="view_details.php?p=complaints">
                     <i class="fas fa-exclamation-circle"></i>
                     <span>Complaints</span></a>
             </li>

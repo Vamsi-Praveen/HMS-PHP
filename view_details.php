@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <!-- Page Heading -->
                 <?php
 
-                if($type == 'student'){
+                if($type == 'students'){
                     ?>
 
                     <h1 class="h3 mb-2 text-gray-800">View Student Data</h1>
@@ -178,7 +178,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 elseif($type == 'gatepass'){
                     ?>
 
-                      <h1 class="h3 mb-2 text-gray-800">View GatePass Data</h1>
+                    <h1 class="h3 mb-2 text-gray-800">View GatePass Data</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -245,6 +245,107 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
                     <?php
                 }
+                elseif($type == "complaints"){
+                    ?>
+                    <h1 class="h3 mb-2 text-gray-800">View Complaints Data</h1>
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Complaint Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Complaint ID</th>
+                                            <th>Roll No</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>College</th>
+                                            <th>Year</th>
+                                            <th>Branch</th>
+                                            <th>Block</th>
+                                            <th>Room No</th>
+                                            <th>Mobile</th>
+                                            <th>Complaint</th>
+                                            <th>Status</th>
+                                            <th class="no-export">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <?php
+                                            include_once('./config/dbConfig.php');
+                                            $query = "SELECT s.*, c.complaint,c.status,c.complaint_id
+                                            FROM complaints c
+                                            JOIN students s ON s.rollno = c.rollno ORDER BY c.complaint_id asc;";
+                                            $result = mysqli_query($conn,$query);
+                                            while($row = mysqli_fetch_assoc($result)){
+                                                ?>
+                                                <td><?php echo $row['complaint_id']?></td>
+                                                <td><?php echo $row['rollno']?></td>
+                                                <td><?php echo $row['name']?></td>
+                                                <td><?php echo $row['email']?></td>
+                                                <td><?php echo $row['college']?></td>
+                                                <td><?php echo $row['year']?></td>
+                                                <td><?php echo $row['branch']?></td>
+                                                <td><?php echo $row['block']?></td>
+                                                <td><?php echo $row['roomno']?></td>
+                                                <td><?php echo $row['mobile']?></td>
+                                                <td><?php echo $row['complaint']?></td>
+                                                <td
+                                                class = "
+                                                <?php
+                                                if($row['status'] == 'pending'){
+                                                    echo 'text-warning';
+                                                }
+                                                elseif($row['status'] == 'success'){
+                                                    echo 'text-success';
+                                                }
+                                                elseif($row['status'] == 'rejected'){
+                                                    echo "text-danger";
+                                                }
+                                                ?>
+
+                                                "
+
+                                                ><?php echo $row['status']?></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-around">
+                                                        <?php
+                                                        if($row['status'] == 'pending'){
+                                                            ?>
+                                                            <div style="cursor: pointer;" onclick="handleSuccess('<?php echo encrypt_data($row['complaint_id'])?>')">
+                                                                <i class="fas fa-check text-success"></i>
+                                                            </div> 
+                                                            <div style="cursor:pointer" onclick="handleReject('<?php echo encrypt_data($row['complaint_id']); ?>')">
+                                                                <i class="fas fa-times text-danger"></i>
+                                                            </div>
+                                                            <?php
+                                                        }
+                                                        elseif($row['status'] == 'success' || $row['status'] == 'rejected'){
+                                                            ?>
+                                                            <h3>-</h3>
+                                                            <?php
+                                                        }
+
+
+                                                        ?>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
                 else{
                     echo '<h3>Invalid Path</h3>';
                 }
@@ -267,8 +368,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 </a>
 
 <script src="vendor/jquery/jquery.min.js"></script>
-<script>
-    function handleDelete(rollno){
+<script type="text/javascript">
+     function handleDelete(rollno){
         if(confirm('Are You sure to delete student?')){
             const xhr = new XMLHttpRequest();
             xhr.open('GET','./delete.php?p=student&rollno='+rollno,true);
@@ -297,10 +398,39 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         }
     }
 
+    function handleSuccess(id){
+        if(confirm('Are You sure to change status to success?')){
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET','changeStatus.php?p=complaints&status=1&complaint_id='+id,true);
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function(){
+                if(xhr.status == 200 && xhr.readyState == 4){
+                    alert('Successfull');
+                    window.location.href = 'view_details.php?p=complaints';
+                }
+            }
+            xhr.send();
+        }
+    }
+    function handleReject(id){
+        if(confirm('Are You sure to change status to reject?')){
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET','changeStatus.php?p=complaints&status=0&complaint_id='+id,true);
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function(){
+                if(xhr.status == 200 && xhr.readyState == 4){
+                    alert('Successfull');
+                    window.location.href = 'view_details.php?p=complaints';
+                }
+            }
+            xhr.send();
+        }
+    }
     $('#printPass').click(function(){
         alert('Print Pass')
     })
 </script>
+
 
 <!-- Logout Modal-->
 <?php include('./includes/logoutModal.php')?>
